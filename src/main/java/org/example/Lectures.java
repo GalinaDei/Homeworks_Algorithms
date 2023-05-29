@@ -1,8 +1,7 @@
 package org.example;
-
+import org.w3c.dom.Node;
 import java.lang.reflect.Array;
 import java.util.Arrays;
-
 public class Lectures {
     public static void main(String [] args){
         int[] array1 = new int[]{89, 5,2, 1, 89, 234, 23, 1, 65, 100};
@@ -18,8 +17,12 @@ public class Lectures {
 //
 //        QuickSort(array1, 0, array1.length-1);
 
-        SortByHeapOne(array1);
-        System.out.println(Arrays.toString(array1));
+//        SortByHeapOne(array1);
+//        System.out.println(Arrays.toString(array1));   // Сортировка кучей.
+        OneLinkList oneLinkList  = new OneLinkList();
+        for (int i = 0; i < array1.length; i++) {
+            oneLinkList.addToHead(array1[i]);
+        }
     }
     // Простая сортировка (пузырьком):
     public static void BubblSort(int[] array){
@@ -151,6 +154,130 @@ public class Lectures {
             array[rootIndex] = array[largest];
             array[largest] = temp;
             SortByHeapTwo(array, heapSize, largest);
+        }
+    }
+    // Лекция 2. Связный список, реализация, методы:
+    public static class OneLinkList {
+        private static class Node {
+            private int value; // текущее значение
+            private OneLinkList.Node next;  // следующее значение
+        }
+        static OneLinkList.Node head;   // начальный (корневой) элемент
+
+        public static void addToHead(int value) {  // добавление элементов в начало списка
+            OneLinkList.Node newNode = new OneLinkList.Node();
+            newNode.value = value;
+            if (head != null) {
+                newNode.next = head;
+            }
+            head = newNode;
+        }
+
+        public void removeFromHead() {
+            if (head != null) {
+                head = head.next;
+            }
+        }
+        public boolean find(int value) {
+            OneLinkList.Node currentNode = head;
+            while (currentNode != null) {
+                if (currentNode.value == value) return true;
+                currentNode = currentNode.next;
+            }
+            return false;
+        }
+        public static void addToEnd(int value) {
+            OneLinkList.Node newNode = new OneLinkList.Node();
+            newNode.value = value;
+            if (head == null) head = newNode;
+            else  {
+                OneLinkList.Node lastNode = head;
+                while (lastNode.next != null) lastNode = lastNode.next;
+                lastNode.next = newNode;
+            }
+        }
+        public static void removeFromEnd() {
+            if (head != null) {
+                OneLinkList.Node preLast = head;
+                while (preLast.next != null) {
+                    if (preLast.next.next == null){
+                        preLast.next = null;
+                        return;
+                    }
+                    preLast = preLast.next;
+                }
+                head = null;
+            }
+        }
+
+    }
+    public static class TwoLinkList {
+        private static class Node {
+            private int value; // текущее значение
+            private TwoLinkList.Node next;  // следующее значение
+            private TwoLinkList.Node previous;
+        }
+        static TwoLinkList.Node head;   // начальный (корневой) элемент
+        static TwoLinkList.Node tail;
+        public static void addToHead(int value) {  // добавление элементов в начало списка
+            TwoLinkList.Node newNode = new TwoLinkList.Node();
+            newNode.value = value;
+            if (head != null) {
+                newNode.next = head;
+                head.previous = newNode;
+            }
+            else { tail = newNode; }
+            head = newNode;
+        }
+
+        public void removeFromHead() {
+            if (head != null) {
+                head = head.next;
+            }
+        }
+
+        public boolean find(int value) {
+            TwoLinkList.Node currentNode = head;
+            while (currentNode != null) {
+                if (currentNode.value == value) return true;
+                currentNode = currentNode.next;
+            }
+            return false;
+        }
+        public static void addToEnd(int value) {
+            TwoLinkList.Node newNode = new TwoLinkList.Node();
+            newNode.value = value;
+            if (head == null) head = newNode;
+            else  {
+                TwoLinkList.Node lastNode = head;
+                while (lastNode.next != null) lastNode = lastNode.next;
+                lastNode.next = newNode;
+            }
+        }
+        public static void removeFromEnd() {
+            if (head != null) {
+                TwoLinkList.Node preLast = head;
+                while (preLast.next != null) {
+                    if (preLast.next.next == null){
+                        preLast.next = null;
+                        return;
+                    }
+                    preLast = preLast.next;
+                }
+                head = null;
+            }
+        }
+        public void revert(){
+            TwoLinkList.Node currentNode = head;
+            while (currentNode != null) {
+                TwoLinkList.Node next =currentNode.next;
+                TwoLinkList.Node previous = currentNode.previous;
+                currentNode.next = previous;
+                currentNode.previous = next;
+                if (previous == null) {tail = currentNode;}
+                if (next == null) {head = currentNode;}
+                currentNode = next;
+            }
         }
     }
 }

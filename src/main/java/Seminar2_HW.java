@@ -1,5 +1,5 @@
 import java.util.Arrays;
-public class Seminar1_HW {
+public class Seminar2_HW {
     public static void main(String [] args){
         int[] array1 = new int[]{89, 5,2, 1, 89, 234, 23, 1, 65, 100};
         SortByHeapOne(array1);
